@@ -1,0 +1,12 @@
+name: icapps_notifications_example
+description: Demonstrates how to use the icapps_notifications plugin.
+
+dependencies:
+  flutter:
+    sdk: flutter
+  icapps_notifications:
+    path: ../
+  firebase_core: ^0.4.0
+
+flutter:
+  uses-material-design: true
