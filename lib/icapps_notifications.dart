@@ -18,7 +18,9 @@ class FirebaseMessaging {
       : _channel = channel,
         _platform = platform;
 
-  static final FirebaseMessaging _instance = FirebaseMessaging.private(const MethodChannel('com.icapps.flutter/icapps_notifications'), const LocalPlatform());
+  static final FirebaseMessaging _instance = FirebaseMessaging.private(
+      const MethodChannel('com.icapps.flutter/icapps_notifications'),
+      const LocalPlatform());
 
   final MethodChannel _channel;
   final Platform _platform;
@@ -29,13 +31,16 @@ class FirebaseMessaging {
   /// it is called.
   ///
   /// Does nothing on Android.
-  void requestNotificationPermissions([IosNotificationSettings iosSettings = const IosNotificationSettings()]) {
+  void requestNotificationPermissions(
+      [IosNotificationSettings iosSettings = const IosNotificationSettings()]) {
     if (_platform.isIOS) {
-      _channel.invokeMethod<void>('requestNotificationPermissions', iosSettings.toMap());
+      _channel.invokeMethod<void>(
+          'requestNotificationPermissions', iosSettings.toMap());
     }
   }
 
-  final StreamController<IosNotificationSettings> _iosSettingsStreamController = StreamController<IosNotificationSettings>.broadcast();
+  final StreamController<IosNotificationSettings> _iosSettingsStreamController =
+      StreamController<IosNotificationSettings>.broadcast();
 
   /// Stream that fires when the user changes their notification settings.
   ///
@@ -45,13 +50,19 @@ class FirebaseMessaging {
   }
 
   /// Sets up [MessageHandler] for incoming messages.
-  void configure({@required MessageHandler onMessage, bool dismissIOSBadgeOnStartup = true}) {
+  void configure(
+      {@required MessageHandler onMessage,
+      bool dismissIOSBadgeOnStartup = true}) {
     _onMessage = onMessage;
     _channel.setMethodCallHandler(_handleMethod);
-    _channel.invokeMethod<void>('configure', ConfigureSettings(dismissIOSBadgeOnStartup: dismissIOSBadgeOnStartup).toMap());
+    _channel.invokeMethod<void>(
+        'configure',
+        ConfigureSettings(dismissIOSBadgeOnStartup: dismissIOSBadgeOnStartup)
+            .toMap());
   }
 
-  final StreamController<String> _tokenStreamController = StreamController<String>.broadcast();
+  final StreamController<String> _tokenStreamController =
+      StreamController<String>.broadcast();
 
   /// Fires when a new FCM token is generated.
   Stream<String> get onTokenRefresh {
@@ -87,7 +98,8 @@ class FirebaseMessaging {
         _tokenStreamController.add(token);
         return null;
       case "onIosSettingsRegistered":
-        _iosSettingsStreamController.add(IosNotificationSettings._fromMap(call.arguments.cast<String, bool>()));
+        _iosSettingsStreamController.add(IosNotificationSettings._fromMap(
+            call.arguments.cast<String, bool>()));
         return null;
       case "onMessage":
         return _onMessage(call.arguments.cast<String, dynamic>());
@@ -104,7 +116,8 @@ class ConfigureSettings {
     this.dismissIOSBadgeOnStartup = true,
   });
 
-  ConfigureSettings._fromMap(Map<String, bool> settings) : dismissIOSBadgeOnStartup = settings['dismissIOSBadgeOnStartup'];
+  ConfigureSettings._fromMap(Map<String, bool> settings)
+      : dismissIOSBadgeOnStartup = settings['dismissIOSBadgeOnStartup'];
 
   @visibleForTesting
   Map<String, dynamic> toMap() {

@@ -2,7 +2,7 @@ name: icapps_notifications
 description: Flutter plugin for Firebase Cloud Messaging on iOS and Android with the icapps standard.
 author: Koen Van Looveren <koen.vanlooveren@icapps.com>
 homepage: https://github.com/icapps/flutter-icapps-notifications
-version: 0.0.1
+version: 0.1.0
 
 flutter:
   plugin:
@@ -11,7 +11,7 @@ flutter:
     pluginClass: FCMPlugin
 
 dependencies:
-  meta: ^1.0.4
+  meta: ^1.0.7
   platform: ^2.0.0
   flutter:
     sdk: flutter
